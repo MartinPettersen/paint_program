@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import CanvasContainer from "../components/(canvas)/CanvasContainer";
+import CanvasPage from "../components/(canvas)/CanvasPage";
 
 export default function Index() {
   return (
@@ -11,7 +12,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <CanvasContainer />
+      <CanvasPage />
     </View>
   );
 }
