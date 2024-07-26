@@ -19,6 +19,7 @@ type Props = {
   paths: AdvancedPath[];
   setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>;
   regretPaths: AdvancedPath[];
+  setAction: any;
 };
 
 const CanvasContainer = ({
@@ -27,6 +28,7 @@ const CanvasContainer = ({
   paths,
   setPaths,
   regretPaths,
+  setAction,
 }: Props) => {
   const [pathColor, setPathColor] = useState<string>(color);
   const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);
@@ -105,7 +107,11 @@ const CanvasContainer = ({
 
         const album = await MediaLibrary.getAlbumAsync("paintProgramImages");
         if (album === null) {
-          await MediaLibrary.createAlbumAsync("paintProgramImages", asset, false);
+          await MediaLibrary.createAlbumAsync(
+            "paintProgramImages",
+            asset,
+            false
+          );
         } else {
           await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
         }
@@ -118,6 +124,10 @@ const CanvasContainer = ({
       }
     }
   };
+
+  useEffect(() => {
+    setAction(() => saveImage);
+  }, []);
 
   return (
     <>
@@ -138,12 +148,6 @@ const CanvasContainer = ({
           />
         ))}
       </Canvas>
-      <TouchableOpacity
-        style={{ backgroundColor: "red", padding: 10 }}
-        onPress={() => saveImage()}
-      >
-        <Text>Save</Text>
-      </TouchableOpacity>
     </>
   );
 };

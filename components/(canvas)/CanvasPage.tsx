@@ -6,12 +6,14 @@ import ColorPalette from "./(color)/ColorPalette";
 import { AdvancedPath } from "../../utils/types";
 import RegrettManager from "./(undo)/RegrettManager";
 import ClearCanvas from "./(clear)/ClearCanvas";
+import SaveButton from "./(save)/SaveButton";
 
 const CanvasPage = () => {
   const [color, setColor] = useState<string>("blue");
   const [strokeWidth, setStrokeWidth] = useState<number>(6);
   const [paths, setPaths] = useState<AdvancedPath[]>([]);
   const [regretPaths, setRegretPaths] = useState<AdvancedPath[]>([]);
+  const [action, setAction] = useState<(() => void) | null>(null);
 
   return (
     <View style={styles.container}>
@@ -22,6 +24,7 @@ const CanvasPage = () => {
         paths={paths}
         setPaths={setPaths}
         regretPaths={regretPaths}
+        setAction={setAction}
       />
       <View style={{ flexDirection: "row" }}>
         <SizeChanger
@@ -35,6 +38,7 @@ const CanvasPage = () => {
           setRegretPaths={setRegretPaths}
         />
         <ClearCanvas setPaths={setPaths} setRegretPaths={setRegretPaths}/>
+        <SaveButton action={action!} />
       </View>
     </View>
   );
