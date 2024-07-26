@@ -12,9 +12,11 @@ type Props = {
 
 const Undo = ({ paths, setPaths, regretPaths, setRegretPaths }: Props) => {
   const handleUndo = () => {
-    const path: AdvancedPath = paths.pop()!;
-    setPaths(paths);
-    setRegretPaths([...regretPaths, path]);
+    if (paths.length > 0) {
+      const path: AdvancedPath = paths.pop()!;
+      setPaths(paths);
+      setRegretPaths([...regretPaths, path]);
+    }
   };
 
   return (
