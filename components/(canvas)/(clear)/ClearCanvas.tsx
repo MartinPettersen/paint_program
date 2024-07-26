@@ -18,7 +18,7 @@ const ClearCanvas = ({setPaths, setRegretPaths}: Props) => {
 
   return (
     <TouchableOpacity onPress={() => handleClear()}>
-      <Feather name={"file-plus"} size={35} color={"white"} />
+      <Feather name={"file-plus"} size={55} color={"white"} />
     </TouchableOpacity>
   )
 }

@@ -1,35 +1,39 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity, Text } from "react-native";
 import {
   TouchInfo,
   Skia,
   useTouchHandler,
   Canvas,
+  useCanvasRef,
   Path,
+  Rect,
 } from "@shopify/react-native-skia";
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
 import { AdvancedPath } from "../../utils/types";
 
 type Props = {
   color: string;
   strokeWidth: number;
-  paths: AdvancedPath[]
-  setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>
+  paths: AdvancedPath[];
+  setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>;
   regretPaths: AdvancedPath[];
-
 };
 
-
-const CanvasContainer = ({ color, strokeWidth, paths, setPaths, regretPaths }: Props) => {
-
+const CanvasContainer = ({
+  color,
+  strokeWidth,
+  paths,
+  setPaths,
+  regretPaths,
+}: Props) => {
   const [pathColor, setPathColor] = useState<string>(color);
   const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);
   const [forceUpdate, setForceUpdate] = useState(0);
 
-
-
   const touchStart = useCallback(
     (touchInfo: TouchInfo) => {
-
       setPaths((old) => {
         const { x, y } = touchInfo;
         const newPath = Skia.Path.Make();
@@ -68,25 +72,79 @@ const CanvasContainer = ({ color, strokeWidth, paths, setPaths, regretPaths }: P
   useEffect(() => {
     setPathColor(color);
     setPathStrokeWidth(strokeWidth);
-
   }, [color, strokeWidth]);
 
   useEffect(() => {
-    setForceUpdate(prev => prev + 1);
+    setForceUpdate((prev) => prev + 1);
   }, [regretPaths]);
 
+  const ref = useCanvasRef();
+
+  const saveImage = async () => {
+    console.log("save image");
+    const image = ref.current?.makeImageSnapshot();
+    if (image) {
+      console.log("is image");
+      const bytes = image.encodeToBytes();
+
+      try {
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+        if (status !== "granted") {
+          console.error("Denied access to media library");
+          return;
+        }
+
+        const base64Data = btoa(String.fromCharCode.apply(null, bytes));
+
+        const tempFileUri = FileSystem.documentDirectory + "test1_image.png";
+        await FileSystem.writeAsStringAsync(tempFileUri, base64Data, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
+
+        const asset = await MediaLibrary.createAssetAsync(tempFileUri);
+
+        const album = await MediaLibrary.getAlbumAsync("paintProgramImages");
+        if (album === null) {
+          await MediaLibrary.createAlbumAsync("paintProgramImages", asset, false);
+        } else {
+          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
+        }
+
+        await FileSystem.deleteAsync(tempFileUri);
+
+        console.log("Image saved successfully");
+      } catch (error) {
+        console.error("Error saving image:", error);
+      }
+    }
+  };
+
   return (
-    <Canvas style={styles.canvas} onTouch={handleTouch} key={forceUpdate}>
-      {paths.map((path, index) => (
-        <Path
-          key={index}
-          path={path.path}
-          color={path.color}
-          style={"stroke"}
-          strokeWidth={path.strokeWidth}
-        />
-      ))}
-    </Canvas>
+    <>
+      <Canvas
+        style={styles.canvas}
+        onTouch={handleTouch}
+        key={forceUpdate}
+        ref={ref}
+      >
+        <Rect x={0} y={0} width={400} height={400} color="white" />
+        {paths.map((path, index) => (
+          <Path
+            key={index}
+            path={path.path}
+            color={path.color}
+            style={"stroke"}
+            strokeWidth={path.strokeWidth}
+          />
+        ))}
+      </Canvas>
+      <TouchableOpacity
+        style={{ backgroundColor: "red", padding: 10 }}
+        onPress={() => saveImage()}
+      >
+        <Text>Save</Text>
+      </TouchableOpacity>
+    </>
   );
 };
 
@@ -96,7 +154,7 @@ const styles = StyleSheet.create({
     height: 400,
     borderWidth: 1,
     borderColor: "black",
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   container: {
     flex: 1,
