@@ -5,6 +5,7 @@ import SizeChanger from "./(size)/SizeChanger";
 import ColorPalette from "./(color)/ColorPalette";
 import { AdvancedPath } from "../../utils/types";
 import RegrettManager from "./(undo)/RegrettManager";
+import ClearCanvas from "./(clear)/ClearCanvas";
 
 const CanvasPage = () => {
   const [color, setColor] = useState<string>("blue");
@@ -14,12 +15,26 @@ const CanvasPage = () => {
 
   return (
     <View style={styles.container}>
-      <ColorPalette setColor={setColor}/>
-      <CanvasContainer color={color} strokeWidth={strokeWidth} paths={paths} setPaths={setPaths} regretPaths={regretPaths} />
-      <View style={{flexDirection: "row"}}>
-
-      <SizeChanger strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} />
-      <RegrettManager paths={paths} setPaths={setPaths} regretPaths={regretPaths} setRegretPaths={setRegretPaths}/>
+      <ColorPalette setColor={setColor} />
+      <CanvasContainer
+        color={color}
+        strokeWidth={strokeWidth}
+        paths={paths}
+        setPaths={setPaths}
+        regretPaths={regretPaths}
+      />
+      <View style={{ flexDirection: "row" }}>
+        <SizeChanger
+          strokeWidth={strokeWidth}
+          setStrokeWidth={setStrokeWidth}
+        />
+        <RegrettManager
+          paths={paths}
+          setPaths={setPaths}
+          regretPaths={regretPaths}
+          setRegretPaths={setRegretPaths}
+        />
+        <ClearCanvas setPaths={setPaths} setRegretPaths={setRegretPaths}/>
       </View>
     </View>
   );
