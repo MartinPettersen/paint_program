@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { AdvancedPath } from "../../../utils/types";
 import Undo from "./Undo";
+import Redo from "./Redo";
 
 type Props = {
   paths: AdvancedPath[];
@@ -19,6 +20,12 @@ const RegrettManager = ({
   return (
     <View style={styles.container}>
       <Undo
+        paths={paths}
+        setPaths={setPaths}
+        regretPaths={regretPaths}
+        setRegretPaths={setRegretPaths}
+      />
+      <Redo
         paths={paths}
         setPaths={setPaths}
         regretPaths={regretPaths}
