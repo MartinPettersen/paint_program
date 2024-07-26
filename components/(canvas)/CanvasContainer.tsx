@@ -21,33 +21,34 @@ type AdvancedPath = {
 };
 
 const CanvasContainer = ({ color, strokeWidth }: Props) => {
-  const [paths, setPaths] = useState<SkPath[]>([]);
-  const [paths2, setPaths2] = useState<AdvancedPath[]>([]);
+  const [paths, setPaths] = useState<AdvancedPath[]>([]);
 
   const [pathColor, setPathColor] = useState<string>(color);
+  const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);
+
 
   const touchStart = useCallback(
     (touchInfo: TouchInfo) => {
       console.log(color, strokeWidth);
       console.log(pathColor, strokeWidth);
 
-      setPaths2((old) => {
+      setPaths((old) => {
         const { x, y } = touchInfo;
         const newPath = Skia.Path.Make();
         newPath.moveTo(x, y);
         const newAdvancedPath = {
           color: pathColor,
-          strokeWidth: strokeWidth,
+          strokeWidth: pathStrokeWidth,
           path: newPath,
         };
         return [...old, newAdvancedPath];
       });
     },
-    [pathColor]
+    [pathColor, pathStrokeWidth]
   );
 
   const touching = useCallback((touchInfo: TouchInfo) => {
-    setPaths2((currentPaths) => {
+    setPaths((currentPaths) => {
       const { x, y } = touchInfo;
       const currentPath = currentPaths[currentPaths.length - 1];
       const lastPoint = currentPath.path.getLastPt();
@@ -69,11 +70,13 @@ const CanvasContainer = ({ color, strokeWidth }: Props) => {
   useEffect(() => {
     console.log("me called " + color);
     setPathColor(color);
-  }, [color]);
+    setPathStrokeWidth(strokeWidth);
+
+  }, [color, strokeWidth]);
 
   return (
     <Canvas style={styles.canvas} onTouch={handleTouch}>
-      {paths2.map((path, index) => (
+      {paths.map((path, index) => (
         <Path
           key={index}
           path={path.path}
