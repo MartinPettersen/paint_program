@@ -32,10 +32,13 @@ const SizeChanger = ({ strokeWidth, setStrokeWidth }: Props) => {
 const styles= StyleSheet.create({
     container: {
         flexDirection: "row",
-        alignItems: "center"
+        alignItems: "center",
+        marginHorizontal: 15,
+      
     },
     text: {
         fontSize: 80,
+        color: "white"
     }
 })
 

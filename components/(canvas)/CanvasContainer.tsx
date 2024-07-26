@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { StyleSheet } from "react-native";
 import {
   TouchInfo,
   Skia,
@@ -14,19 +14,21 @@ type Props = {
   strokeWidth: number;
   paths: AdvancedPath[]
   setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>
+  regretPaths: AdvancedPath[];
+
 };
 
 
-const CanvasContainer = ({ color, strokeWidth, paths, setPaths }: Props) => {
+const CanvasContainer = ({ color, strokeWidth, paths, setPaths, regretPaths }: Props) => {
 
   const [pathColor, setPathColor] = useState<string>(color);
   const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);
+  const [forceUpdate, setForceUpdate] = useState(0);
+
 
 
   const touchStart = useCallback(
     (touchInfo: TouchInfo) => {
-      console.log(color, strokeWidth);
-      console.log(pathColor, strokeWidth);
 
       setPaths((old) => {
         const { x, y } = touchInfo;
@@ -64,14 +66,17 @@ const CanvasContainer = ({ color, strokeWidth, paths, setPaths }: Props) => {
   );
 
   useEffect(() => {
-    console.log("me called " + color);
     setPathColor(color);
     setPathStrokeWidth(strokeWidth);
 
   }, [color, strokeWidth]);
 
+  useEffect(() => {
+    setForceUpdate(prev => prev + 1);
+  }, [regretPaths]);
+
   return (
-    <Canvas style={styles.canvas} onTouch={handleTouch}>
+    <Canvas style={styles.canvas} onTouch={handleTouch} key={forceUpdate}>
       {paths.map((path, index) => (
         <Path
           key={index}
@@ -91,6 +96,7 @@ const styles = StyleSheet.create({
     height: 400,
     borderWidth: 1,
     borderColor: "black",
+    backgroundColor: "white"
   },
   container: {
     flex: 1,

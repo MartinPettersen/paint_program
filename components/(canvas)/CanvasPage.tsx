@@ -1,20 +1,26 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import CanvasContainer from "./CanvasContainer";
-import SizeChanger from "./SizeChanger";
-import ColorPalette from "./ColorPalette";
+import SizeChanger from "./(size)/SizeChanger";
+import ColorPalette from "./(color)/ColorPalette";
 import { AdvancedPath } from "../../utils/types";
+import RegrettManager from "./(undo)/RegrettManager";
 
 const CanvasPage = () => {
   const [color, setColor] = useState<string>("blue");
   const [strokeWidth, setStrokeWidth] = useState<number>(6);
   const [paths, setPaths] = useState<AdvancedPath[]>([]);
+  const [regretPaths, setRegretPaths] = useState<AdvancedPath[]>([]);
 
   return (
     <View style={styles.container}>
       <ColorPalette setColor={setColor}/>
-      <CanvasContainer color={color} strokeWidth={strokeWidth} paths={paths} setPaths={setPaths}/>
+      <CanvasContainer color={color} strokeWidth={strokeWidth} paths={paths} setPaths={setPaths} regretPaths={regretPaths} />
+      <View style={{flexDirection: "row"}}>
+
       <SizeChanger strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} />
+      <RegrettManager paths={paths} setPaths={setPaths} regretPaths={regretPaths} setRegretPaths={setRegretPaths}/>
+      </View>
     </View>
   );
 };
@@ -25,6 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
+    backgroundColor: "#292524",
   },
 });
 
