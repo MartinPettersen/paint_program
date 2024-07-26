@@ -1,27 +1,23 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { View, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import {
-  SkPath,
   TouchInfo,
   Skia,
   useTouchHandler,
   Canvas,
   Path,
 } from "@shopify/react-native-skia";
+import { AdvancedPath } from "../../utils/types";
 
 type Props = {
   color: string;
   strokeWidth: number;
+  paths: AdvancedPath[]
+  setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>
 };
 
-type AdvancedPath = {
-  color: string;
-  strokeWidth: number;
-  path: SkPath;
-};
 
-const CanvasContainer = ({ color, strokeWidth }: Props) => {
-  const [paths, setPaths] = useState<AdvancedPath[]>([]);
+const CanvasContainer = ({ color, strokeWidth, paths, setPaths }: Props) => {
 
   const [pathColor, setPathColor] = useState<string>(color);
   const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);

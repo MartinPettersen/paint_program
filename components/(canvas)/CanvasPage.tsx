@@ -1,40 +1,31 @@
-import React, { useState } from 'react'
-import { View, StyleSheet } from 'react-native'
-import CanvasContainer from './CanvasContainer'
-import ColorButton from './ColorButton'
-import SizeChanger from './SizeChanger'
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import CanvasContainer from "./CanvasContainer";
+import SizeChanger from "./SizeChanger";
+import ColorPalette from "./ColorPalette";
+import { AdvancedPath } from "../../utils/types";
 
 const CanvasPage = () => {
-
-    const [color, setColor] = useState<string>("blue")
-    const [strokeWidth, setStrokeWidth] = useState<number>(6)
+  const [color, setColor] = useState<string>("blue");
+  const [strokeWidth, setStrokeWidth] = useState<number>(6);
+  const [paths, setPaths] = useState<AdvancedPath[]>([]);
 
   return (
     <View style={styles.container}>
-        <SizeChanger strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} />
-      <View style={{flexDirection: "row"}}>
-        <ColorButton color='red' setColor={setColor} />
-        <ColorButton color='green' setColor={setColor} />
-        <ColorButton color='blue' setColor={setColor} />
-        <ColorButton color='pink' setColor={setColor} />
-        <ColorButton color='yellow' setColor={setColor} />
-
-      </View>
-      
-      <CanvasContainer color={color} strokeWidth={strokeWidth}/>
-
-
+      <ColorPalette setColor={setColor}/>
+      <CanvasContainer color={color} strokeWidth={strokeWidth} paths={paths} setPaths={setPaths}/>
+      <SizeChanger strokeWidth={strokeWidth} setStrokeWidth={setStrokeWidth} />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%"
-    }
-})
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
+  },
+});
 
-export default CanvasPage
+export default CanvasPage;
