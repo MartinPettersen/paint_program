@@ -15,7 +15,7 @@ const SizeChanger = ({ strokeWidth, setStrokeWidth }: Props) => {
           strokeWidth={strokeWidth}
           action={() => setStrokeWidth(strokeWidth + 1)}
         />
-        <View>
+        <View style={styles.textContainer}>
           <Text style={styles.text}>{strokeWidth}</Text>
         </View>
         <SizeButton
@@ -36,6 +36,9 @@ const styles = StyleSheet.create({
     fontSize: 80,
     color: "white",
   },
+  textContainer: {
+    paddingHorizontal: 10,
+  }
 });
 
 export default SizeChanger;
