@@ -107,20 +107,8 @@ const CanvasContainer = ({
           encoding: FileSystem.EncodingType.Base64,
         });
 
-        const asset = await MediaLibrary.createAssetAsync(tempFileUri);
+        await MediaLibrary.createAssetAsync(tempFileUri);
         
-        /*
-        const album = await MediaLibrary.getAlbumAsync("paintProgramImages");
-        if (album === null) {
-          await MediaLibrary.createAlbumAsync(
-            "paintProgramImages",
-            asset,
-            false
-          );
-        } else {
-          await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
-        }
-        */
         await FileSystem.deleteAsync(tempFileUri);
 
         console.log("Image saved successfully");
