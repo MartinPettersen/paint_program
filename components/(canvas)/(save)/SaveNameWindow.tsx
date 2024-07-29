@@ -73,7 +73,7 @@ const SaveNameWindow = ({
 
 const styles = StyleSheet.create({
   container: {
-    height: "30%",
+    height: "35%",
     width: "80%",
     alignItems: "center",
     justifyContent: "center",

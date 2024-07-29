@@ -88,10 +88,8 @@ const CanvasContainer = ({
   const ref = useCanvasRef();
 
   const saveImage = async (fileName: string) => {
-    console.log("save image");
     const image = ref.current?.makeImageSnapshot();
     if (image) {
-      console.log("is image");
       const bytes = image.encodeToBytes();
 
       try {
@@ -101,7 +99,8 @@ const CanvasContainer = ({
           return;
         }
 
-        const base64Data = btoa(String.fromCharCode.apply(null, bytes));
+        const byteArray = Array.from(bytes);
+        const base64Data = btoa(String.fromCharCode.apply(null, byteArray));
 
         const tempFileUri = FileSystem.documentDirectory + fileName + ".jpg";
         await FileSystem.writeAsStringAsync(tempFileUri, base64Data, {
@@ -109,7 +108,8 @@ const CanvasContainer = ({
         });
 
         const asset = await MediaLibrary.createAssetAsync(tempFileUri);
-
+        
+        /*
         const album = await MediaLibrary.getAlbumAsync("paintProgramImages");
         if (album === null) {
           await MediaLibrary.createAlbumAsync(
@@ -120,7 +120,7 @@ const CanvasContainer = ({
         } else {
           await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);
         }
-
+        */
         await FileSystem.deleteAsync(tempFileUri);
 
         console.log("Image saved successfully");
