@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 15,
   },
   text: {
     fontSize: 80,

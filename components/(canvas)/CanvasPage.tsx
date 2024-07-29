@@ -40,7 +40,7 @@ const CanvasPage = () => {
           <ClearCanvas setPaths={setPaths} setRegretPaths={setRegretPaths} />
         </View>
         <View style={{ flexDirection: "row" }}>
-        <RegrettManager
+          <RegrettManager
             paths={paths}
             setPaths={setPaths}
             regretPaths={regretPaths}
