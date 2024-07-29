@@ -82,7 +82,7 @@ const CanvasContainer = ({
 
   const ref = useCanvasRef();
 
-  const saveImage = async () => {
+  const saveImage = async (fileName: string) => {
     console.log("save image");
     const image = ref.current?.makeImageSnapshot();
     if (image) {
@@ -98,7 +98,7 @@ const CanvasContainer = ({
 
         const base64Data = btoa(String.fromCharCode.apply(null, bytes));
 
-        const tempFileUri = FileSystem.documentDirectory + "test1_image.png";
+        const tempFileUri = FileSystem.documentDirectory + fileName + ".jpg";
         await FileSystem.writeAsStringAsync(tempFileUri, base64Data, {
           encoding: FileSystem.EncodingType.Base64,
         });
