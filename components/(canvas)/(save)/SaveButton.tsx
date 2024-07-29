@@ -17,7 +17,6 @@ const SaveButton = ({ action }: Props) => {
   return (
     <>
       <TouchableOpacity style={styles.button} onPress={() => handleSaving()}>
-        <Text>Save</Text>
         <Feather name={"save"} size={55} color={"white"} />
       </TouchableOpacity>
       <SaveNameWindow
@@ -32,13 +31,15 @@ const SaveButton = ({ action }: Props) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "black",
-    paddingHorizontal: 8,
-    margin: 4,
+    width: 60,
+    height: 60,
     borderWidth: 1,
     borderColor: "#a8a29e",
     borderRadius: 5,
     alignContent: "center",
     justifyContent: "center",
+    alignItems: "center",
+    margin: 10,
   },
 });
 

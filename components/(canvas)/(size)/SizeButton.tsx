@@ -17,14 +17,16 @@ const SizeButton = ({ strokeWidth, action, label }: Props) => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: "black",
-        paddingHorizontal: 8,
-        margin: 4,
-        borderWidth: 1,
-        borderColor: "#a8a29e",
-        borderRadius: 5,
-        alignContent: "center",
-        justifyContent: "center",
+      backgroundColor: "black",
+      width: 60,
+      height: 60,
+      borderWidth: 1,
+      borderColor: "#a8a29e",
+      borderRadius: 5,
+      alignContent: "center",
+      justifyContent: "center",
+      alignItems: "center",
+      margin: 10,
     },
     text: {
         color: "white",

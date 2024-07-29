@@ -12,6 +12,8 @@ import {
 import * as MediaLibrary from "expo-media-library";
 import * as FileSystem from "expo-file-system";
 import { AdvancedPath } from "../../utils/types";
+import * as Sharing from 'expo-sharing';
+import { captureRef } from 'react-native-view-shot';
 
 type Props = {
   color: string;
@@ -20,6 +22,8 @@ type Props = {
   setPaths: React.Dispatch<React.SetStateAction<AdvancedPath[]>>;
   regretPaths: AdvancedPath[];
   setAction: any;
+  setShareDrawingAction: any;
+
 };
 
 const CanvasContainer = ({
@@ -29,6 +33,7 @@ const CanvasContainer = ({
   setPaths,
   regretPaths,
   setAction,
+  setShareDrawingAction,
 }: Props) => {
   const [pathColor, setPathColor] = useState<string>(color);
   const [pathStrokeWidth, setPathStrokeWidth] = useState<number>(strokeWidth);
@@ -125,8 +130,32 @@ const CanvasContainer = ({
     }
   };
 
+
+  const handleSaveDrawing = async () => {
+    if (ref.current) {
+      const uri = await captureRef(ref, {
+        format: 'jpg',
+        quality: 1.0,
+      });
+      return uri;
+    }
+  };
+
+  const handleShareDrawing = async () => {
+    const imageUri = await handleSaveDrawing();
+    if (imageUri && (await Sharing.isAvailableAsync())) {
+      await Sharing.shareAsync(imageUri, {
+        mimeType: 'image/png',
+        dialogTitle: 'Perfect drawing to share',
+      });
+    } else {
+      alert('Sharing is not available');
+    }
+  };
+
   useEffect(() => {
     setAction(() => saveImage);
+    setShareDrawingAction(() => handleShareDrawing)
   }, []);
 
   return (
@@ -148,6 +177,7 @@ const CanvasContainer = ({
           />
         ))}
       </Canvas>
+
     </>
   );
 };

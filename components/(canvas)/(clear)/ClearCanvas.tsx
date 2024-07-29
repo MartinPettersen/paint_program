@@ -18,7 +18,7 @@ const ClearCanvas = ({setPaths, setRegretPaths}: Props) => {
 
   return (
     <TouchableOpacity onPress={() => handleClear()} style={styles.button}>
-      <Feather name={"file-plus"} size={55} color={"white"} />
+      <Feather name={"trash-2"} size={55} color={"#b91c1c"} />
     </TouchableOpacity>
   )
 }
@@ -26,13 +26,14 @@ const ClearCanvas = ({setPaths, setRegretPaths}: Props) => {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: "black",
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     borderWidth: 1,
     borderColor: "#a8a29e",
     borderRadius: 5,
     alignContent: "center",
     justifyContent: "center",
+    marginTop: 20,
     alignItems: "center",
 }
 })
